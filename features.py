@@ -13,6 +13,7 @@ def FeaturesExtract(proj):
         featureCollector['sucNum'] = len(func.suc)
         featureCollector['preNum'] = len(func.pre)
         featureCollector['name'] = func.name
+        featureCollector['bN'] = len(func.nodes)
 
         optVexBlocks = []
         for node in func.nodes:

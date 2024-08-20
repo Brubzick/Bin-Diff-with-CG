@@ -9,7 +9,9 @@ def vexCompare(optVexBlock1, optVexBlock2):
     for v2 in optVexBlock2:
         mp = 0
         for v1 in optVexBlock1:
-            if ((len(v1) == 0) | (len(v2) == 0)):
+            if ((len(v1) == 0) & (len(v2) == 0)):
+                tp = 1
+            elif ((len(v1) == 0) | (len(v2) == 0)):
                 tp = 0
             else:
                 comPart = FindComPart(v1,v2)
@@ -25,6 +27,8 @@ def vexCompare(optVexBlock1, optVexBlock2):
 
 
 def GetSimMatrix(proj1, proj2):
+    print('start comparing')
+
     features1 = FeaturesExtract(proj1)
     features2 = FeaturesExtract(proj2)
 
@@ -46,25 +50,39 @@ def GetSimMatrix(proj1, proj2):
         vex1 = f1['optVexBlocks']
         sucNum1 = f1['sucNum']
         preNum1 = f1['preNum']
+        name1 = f1['name']
+        bN1 = f1['bN']
         for j in range(l2):
             f2 =  features2[j]
             vex2 = f2['optVexBlocks']
             sucNum2 = f1['sucNum']
             preNum2 = f1['preNum']
+            name2 = f2['name']
+            bN2 = f2['bN']
 
             vexScore = vexCompare(vex1, vex2)
 
             if (sucNum1 == sucNum2):
                 sucScore = 1
             else:
-                sucScore = vexScore*min(sucNum1,sucNum2)/max(sucNum1,sucNum2)
+                sucScore = 0
 
             if (preNum1 == preNum2):
                 preScore = 1
             else:
-                preScore = vexScore*min(preNum1,preNum2)/max(preNum1,preNum2)
+                preScore = 0
 
-            simM[i,j] = (vexScore+sucScore+preScore)/3
+            if (name1 == name2):
+                nScore = 1
+            else:
+                nScore = 0
+            
+            if (bN1 == bN2):
+                bNScore = 1
+            else:
+                bNScore = min(bN1,bN2)/max(bN1,bN2)
+
+            simM[i,j] = (sucScore*0.05 + preScore*0.05 + nScore*0.1 + bNScore*0.3 + vexScore*0.5)
     
     return (nameList1, nameList2, simM)
 

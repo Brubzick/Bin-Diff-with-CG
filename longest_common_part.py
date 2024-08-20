@@ -1,4 +1,4 @@
-def FindComPart(strand1, strand2): # 用strand2去比strand1,找最长公共部分
+def FindComPart(strand1, strand2): # 用strand2比strand1，找最长相同部分
     l2 = len(strand2)
     maxL = min(len(strand1),l2)
     # padding strand1
