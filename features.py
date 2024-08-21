@@ -1,8 +1,11 @@
 from get_functions import GetFunc
 from vex_opt import VexOpt
 from vex_norm import TypeNorm
+import os
+import json
 
 def FeaturesExtract(proj):
+    filename = os.path.basename(proj.filename)
     cfg = proj.analyses.CFGFast(normalize=True)
     funcs = GetFunc(cfg)
 
@@ -16,7 +19,9 @@ def FeaturesExtract(proj):
         featureCollector['bN'] = len(func.nodes)
 
         optVexBlocks = []
+        size = 0
         for node in func.nodes:
+            size += node.size
             optVexNorm = []
             vexBlock = node.block.vex.statements
             optVex = VexOpt(vexBlock)
@@ -27,8 +32,13 @@ def FeaturesExtract(proj):
             optVexBlocks.append(optVexNorm)
 
         featureCollector['optVexBlocks'] = optVexBlocks
+        featureCollector['size'] = size
 
         features.append(featureCollector)
+
+    dataName = filename + '_features.json'
+    with open('testData/features/'+dataName, 'w', encoding='utf-8') as f:
+        json.dump(features, f) # save the features
     
     return features
 

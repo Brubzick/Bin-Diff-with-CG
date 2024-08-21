@@ -1,6 +1,8 @@
 from features import FeaturesExtract
 from longest_common_part import FindComPart
 import numpy as np
+import os
+import json
 
 def vexCompare(optVexBlock1, optVexBlock2):
     score = 0
@@ -27,24 +29,19 @@ def vexCompare(optVexBlock1, optVexBlock2):
 
 
 def GetSimMatrix(proj1, proj2):
-    print('start comparing')
-
+    print('exracting features')
+    filename1 = os.path.basename(proj1.filename)
+    filename2 = os.path.basename(proj2.filename)
     features1 = FeaturesExtract(proj1)
     features2 = FeaturesExtract(proj2)
 
     l1 = len(features1)
     l2 = len(features2)
-
-    nameList1 = []
-    nameList2 = []
-
-    for i in range(l1):
-        nameList1.append(features1[i]['name'])
-    for i in range(l2):
-        nameList2.append(features2[i]['name'])
+    total = l1*l2
 
     simM = np.zeros((l1,l2))
-
+    print('start comparing')
+    count = 0
     for i in range(l1):
         f1 = features1[i]
         vex1 = f1['optVexBlocks']
@@ -82,13 +79,16 @@ def GetSimMatrix(proj1, proj2):
             else:
                 bNScore = min(bN1,bN2)/max(bN1,bN2)
 
-            simM[i,j] = (sucScore*0.05 + preScore*0.05 + nScore*0.1 + bNScore*0.3 + vexScore*0.5)
+            simM[i,j] = (sucScore*0.1 + preScore*0.1 + nScore*0.2 + bNScore*0.2 + vexScore*0.4)
+            count += 1
+            progress = count/total*100
+            print('progress:',f'{progress}%',end='\r')
     
-    return (nameList1, nameList2, simM)
+    dataName = filename1+'_'+filename2+'_simMatrix.json'
+    simM_list = simM.tolist()
+    with open('testData/simMatrixes/'+dataName, 'w', encoding='utf-8') as f:
+        json.dump(simM_list, f) # save the simMatrix
+    
+    return (features1, features2, simM)
 
-        
-    
-        
-
-    
 

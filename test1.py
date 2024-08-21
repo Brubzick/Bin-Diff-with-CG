@@ -1,26 +1,38 @@
 import angr
 from simMatrix import GetSimMatrix
 from matched import matchedPairs
+from result import GetResult
+import os
+from openpyxl import Workbook
 
 p1 = angr.Project('../bin_range/file/file_5.38_x86', auto_load_libs=False)
 p2 = angr.Project('../bin_range/file/file_5.38_arm', auto_load_libs=False)
 
-(nameList1, nameList2, simMatrix) = GetSimMatrix(p1,p2)
+filename1 = os.path.basename(p1.filename)
+filename2 = os.path.basename(p2.filename)
+
+(features1, features2, simMatrix) = GetSimMatrix(p1,p2)
 
 matching = matchedPairs(simMatrix)
 
-scoreList = []
-for site in matching:
-    print(nameList1[site[0]], nameList2[site[1]], simMatrix[site[0],site[1]])
-    scoreList.append(simMatrix[site[0],site[1]])
+tSize1 = 0
+tSize2 = 0
+for func in features1:
+    tSize1 += func['size']
+for func in features2:
+    tSize2 += func['size']
 
-finalScore = (sum(scoreList)/len(scoreList))*((len(matching)/simMatrix.shape[0])+(len(matching)/simMatrix.shape[1]))/2
-print(finalScore)
+result = GetResult(features1, features2, simMatrix, matching)
 
-
-
-
-
+dataName = filename1+'_'+filename2+'_result.xlsx'
+wb = Workbook()
+ws = wb.active
+for i in range(len(result)):
+    for j in range(len(result[i])):
+        ws.cell(row=i+1, column=j+1, value=result[i][j])
+wb.save('testData/results/'+dataName)
+# with open('testData/results/'+dataName, 'w', encoding='utf-8') as f:
+#     json.dump(result, f) # save the result
 
 
 
