@@ -27,5 +27,5 @@ def GetResult(features1, features2, simMatrix, matching):
     print('Final Score:',finalScore)
     print(size1,tSize1,size2,tSize2)
     result.append(['finalScore', finalScore])
-
+    print(countFull)
     return result

@@ -1,12 +1,11 @@
 import json
-import os
 from openpyxl import Workbook
 import numpy as np
 from matched import matchedPairs
 from result import GetResult
 
-filename1 = 'unzip_x86'
-filename2 = 'unzip_arm'
+filename1 = 'dfs_gcc_O0'
+filename2 = 'hello_gcc_O0'
 
 with open('./testData/features/'+filename1+'_features.json','r') as f:
     features1 = json.load(f)

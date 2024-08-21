@@ -5,8 +5,8 @@ from result import GetResult
 import os
 from openpyxl import Workbook
 
-p1 = angr.Project('../bin_range/file/file_5.38_x86', auto_load_libs=False)
-p2 = angr.Project('../bin_range/file/file_5.38_arm', auto_load_libs=False)
+p1 = angr.Project('../bin_range/arm/base64_arm', auto_load_libs=False)
+p2 = angr.Project('../bin_range/x86/base64_x86', auto_load_libs=False)
 
 filename1 = os.path.basename(p1.filename)
 filename2 = os.path.basename(p2.filename)
@@ -31,8 +31,6 @@ for i in range(len(result)):
     for j in range(len(result[i])):
         ws.cell(row=i+1, column=j+1, value=result[i][j])
 wb.save('testData/results/'+dataName)
-# with open('testData/results/'+dataName, 'w', encoding='utf-8') as f:
-#     json.dump(result, f) # save the result
 
 
 
