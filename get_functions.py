@@ -22,7 +22,10 @@ def GetFunc(cfg):
             for n in nodes:
                 if hasattr(n, 'is_hook'):
                     if (not n.is_hook):
-                        blocks.append(cfg.get_any_node(n.addr))
+                        cfgNode = cfg.get_any_node(n.addr)
+                        if cfgNode != None:
+                            blocks.append(cfgNode)
+            
             if (len(blocks) == 0):
                 continue
             elif ((len(blocks) == 1) & (len(blocks[0].block.vex.statements) <= 1)):

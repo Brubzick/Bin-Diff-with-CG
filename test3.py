@@ -1,12 +1,15 @@
-from scipy.optimize import linear_sum_assignment
-import numpy as np
+import angr
 
-costM = [[2,5],[2,2],[3,2]]
+p1 = angr.Project('../bin_range/openssl/openssl_x86', auto_load_libs=False)
+cfg = p1.analyses.CFGFast(normalize=True)
 
-costM = np.array(costM)
-c = np.copy(costM)
-print(c)
+cg = cfg.functions.callgraph
 
-x,y = linear_sum_assignment(costM)
+addrs = cg.nodes
 
-print(x,y)
+addr = list(addrs)[2]
+
+func = cfg.functions.function(addr)
+
+for node in func.nodes:
+    print(cfg.get_any_node(node.addr))
