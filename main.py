@@ -1,43 +1,30 @@
-import angr
-from simMatrix import GetSimMatrix
-from matched import matchedPairs
-from result import GetResult
 import os
-from openpyxl import Workbook
+from whole_process import process
+from save_result import saveResult
 
-p1 = angr.Project('../bin_range/openssl/openssl_x86', auto_load_libs=False)
-p2 = angr.Project('../bin_range/openssl/openssl_arm', auto_load_libs=False)
+# required parameters 二进制文件路径
+file1Path = '../bin_range/file/file_5.38_x86'
+file2Path = '../bin_range/file/file_5.38_arm'
+filename1 = os.path.basename(file1Path)
+filename2 = os.path.basename(file2Path)
+# optional parameters 
+# 如果提供特征和相似度矩阵，则提供的部分将不会再计算
+features1Path = None
+features2Path = None
+simMatrixPath = None
+# 是否保存抽取的特征和相似度矩阵，如果是已提供的，则不会保存
+save = True
+features1SavePath = './testData/features/'+filename1+'_features.json'
+features2SavePath = './testData/features/'+filename2+'_features.json'
+simMatrixSavePath = './testData/simMatrixes/'+filename1+'_'+filename2+'_simMatrix.json'
 
-if p1.arch == p2.arch:
-    threshold = 0.75
-else:
-    threshold = 0.6
+# 是否保存结果和保存路径
+resultSave = True
+resultSavePath = './testData/results/'+filename1+'_'+filename2+'_result.xlsx'
 
-filename1 = os.path.basename(p1.filename)
-filename2 = os.path.basename(p2.filename)
-
-(features1, features2, simMatrix) = GetSimMatrix(p1,p2,vexMode='Mnemonic') # vexMode默认为'Mnemonic',还可以改为'vexCompare',但会大大增加运行时间，且不一定会增加结果的精确度。
-
-matching = matchedPairs(simMatrix)
-
-tSize1 = 0
-tSize2 = 0
-for func in features1:
-    tSize1 += func['size']
-for func in features2:
-    tSize2 += func['size']
-
-result = GetResult(features1, features2, simMatrix, matching)
-
-finalScore = result[-1][-1]
-
-dataName = filename1+'_'+filename2+'_result.xlsx'
-wb = Workbook()
-ws = wb.active
-for i in range(len(result)):
-    for j in range(len(result[i])):
-        ws.cell(row=i+1, column=j+1, value=result[i][j])
-wb.save('testData/results/'+dataName)
-
-if finalScore > threshold:
-    print('possibly be the same source.')
+if __name__ == '__main__':
+    
+    result = process(p1Path=file1Path, p2Path=file2Path, features1Path=features1Path, features2Path=features2Path, simMatrixPath=simMatrixPath, save=save, features1SavePath=features1SavePath, features2SavePath=features2SavePath, simMatrixSavePath=simMatrixSavePath)
+    
+    if resultSave:
+        saveResult(result, resultSavePath)
