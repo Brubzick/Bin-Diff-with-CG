@@ -3,8 +3,8 @@ from whole_process import process
 from save_result import saveResult
 
 # required parameters 二进制文件路径
-file1Path = '../bin_range/file/file_5.38_arm'
-file2Path = '../bin_range/file/file_5.38_x86'
+file1Path = '../C_bin/dfs_gcc_O0'
+file2Path = '../C_bin/other_source/hello_gcc_O0'
 filename1 = os.path.basename(file1Path)
 filename2 = os.path.basename(file2Path)
 # optional parameters 
