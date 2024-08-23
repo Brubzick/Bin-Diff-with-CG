@@ -7,6 +7,7 @@ from VEX_opt.const_folding_6 import ConstFloding
 from VEX_opt.Get_Get_Elimination_7 import GGEliminate
 from VEX_opt.Load_Store_Op_8 import LLEliminate, LSEliminate,SSEliminate
 
+#优化VEX IR
 def VexOpt(block):
     
     block = RmUnrelated(block)

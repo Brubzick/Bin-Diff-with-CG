@@ -1,20 +1,4 @@
-
-def GetName(stmt_str):
-
-    stmt_str = stmt_str.replace(',', ' ')
-    stmt_str = stmt_str.replace('(', ' ')
-    stmt_str = stmt_str.replace(')', ' ')
-
-    variables = []
-    stmt_str_list = stmt_str.split()
-
-    for i in range(0, len(stmt_str_list)):
-        if stmt_str_list[i][0] == 't':
-            variables.append(stmt_str_list[i])
-    
-    return variables
-        
-
+# 把VEX IR语句依据类型标准化
 def TypeNorm(stmt):
     stmt_str = str(stmt)
     tag = stmt.tag

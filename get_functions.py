@@ -6,6 +6,7 @@ class Func:
         self.nodes = []
         self.name = name
 
+# 根据控制流图和调用图提取出函数和函数中有效的基本块
 def GetFunc(cfg):
 
     cg = cfg.functions.callgraph

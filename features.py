@@ -2,6 +2,7 @@ from get_functions import GetFunc
 from vex_opt import VexOpt
 from vex_norm import TypeNorm
 
+# 抽取特征，得到一个元素都为字典的列表
 def FeaturesExtract(proj):
     cfg = proj.analyses.CFGFast(normalize=True)
     funcs = GetFunc(cfg)

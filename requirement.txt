@@ -1,0 +1,6 @@
+angr
+networkx
+numpy
+openpyxl
+pyvex
+scipy

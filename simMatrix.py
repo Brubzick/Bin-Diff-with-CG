@@ -30,6 +30,7 @@ def vexMnemonic(optVexBlock1, optVexBlock2):# count mnemonic to calculate simila
     vexScore = f/len(mnemonics)
     return vexScore
 
+# get similarity matrix 相似度矩阵
 def GetSimMatrix(features1, features2):
 
     l1 = len(features1)
@@ -53,29 +54,34 @@ def GetSimMatrix(features1, features2):
             preNum2 = f1['preNum']
             name2 = f2['name']
             bN2 = f2['bN']
-
+            # vexScore
             vexScore = vexMnemonic(vex1, vex2)
 
+            # sucScore
             if (sucNum1 == sucNum2):
                 sucScore = 1
             else:
                 sucScore = 0
 
+            # preScore
             if (preNum1 == preNum2):
                 preScore = 1
             else:
                 preScore = 0
-
+            
+            # name score
             if (name1 == name2):
                 nScore = 1
             else:
                 nScore = 0
             
+            # basic block number score
             if (bN1 == bN2):
                 bNScore = 1
             else:
                 bNScore = min(bN1,bN2)/max(bN1,bN2)
 
+            # score in similarity matrix
             simM[i,j] = (sucScore*0.1 + preScore*0.1 + nScore*0.2 + bNScore*0.2 + vexScore*0.4)
             
             count += 1
