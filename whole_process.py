@@ -18,7 +18,7 @@ def process(p1Path, p2Path, features1Path=None,features2Path=None,simMatrixPath=
     filename1 = os.path.basename(p1Path)
     filename2 = os.path.basename(p2Path)
 
-    print('getting features')
+    print('Exracting features')
     # features1
     if features1Path == None:
         features1 = FeaturesExtract(p1)

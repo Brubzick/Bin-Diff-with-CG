@@ -1,16 +1,16 @@
 
 class Func:
-    def __init__(self, name):
+    def __init__(self, name, addr):
         self.suc = []
         self.pre = []
-        self.nodes = []
+        self.cfg = None
         self.name = name
+        self.addr = addr
 
 # 根据控制流图和调用图提取出函数和函数中有效的基本块
 def GetFunc(cfg):
 
     cg = cfg.functions.callgraph
-
     addrs = cg.nodes
     edges = cg.edges
     funcDict = {}
@@ -18,22 +18,18 @@ def GetFunc(cfg):
     for addr in addrs:
         func = cfg.functions.function(addr)
         if (not func.is_simprocedure):
-            blocks = []
-            nodes = func.nodes
-            for n in nodes:
-                if hasattr(n, 'is_hook'):
-                    if (not n.is_hook):
-                        cfgNode = cfg.get_any_node(n.addr)
+            cfgNodes = []
+            for node in func.nodes:
+                if hasattr(node, 'is_hook'):
+                    if (not node.is_hook):
+                        cfgNode = cfg.get_any_node(node.addr)
                         if cfgNode != None:
-                            blocks.append(cfgNode)
+                            cfgNodes.append(cfgNode)
             
-            if (len(blocks) == 0):
-                continue
-            elif ((len(blocks) == 1) & (len(blocks[0].block.vex.statements) <= 1)):
-                continue
-            else:
-                f = Func(func.name)
-                f.nodes = blocks
+            if (len(cfgNodes) > 0):
+                subCFG = cfg.graph.subgraph(cfgNodes) # CFG (networkx Digraph) of the function
+                f = Func(func.name, func.addr)
+                f.cfg = subCFG
                 funcDict[addr] = f
     
     for edge in edges:

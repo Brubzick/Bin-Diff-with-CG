@@ -4,8 +4,8 @@ from save_result import saveResult
 
 if __name__ == '__main__':
     # required parameters 二进制文件路径
-    file1Path = '../bin_range/x86/alsamixer_x86'
-    file2Path = '../bin_range/x86/alsaucm_x86'
+    file1Path = '../bin_range/unzip/unzip_x86'
+    file2Path = '../bin_range/file/file_5.38_x86'
     filename1 = os.path.basename(file1Path)
     filename2 = os.path.basename(file2Path)
     # optional parameters 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     simMatrixSavePath = './testData/simMatrixes/'+filename1+'_'+filename2+'_simMatrix.json'
 
     # 是否保存结果和保存路径
-    resultSave = True
+    resultSave = False
     resultSavePath = './testData/results/'+filename1+'_'+filename2+'_result.xlsx'
     
     result = process(p1Path=file1Path, p2Path=file2Path, features1Path=features1Path, features2Path=features2Path, simMatrixPath=simMatrixPath, save=save, features1SavePath=features1SavePath, features2SavePath=features2SavePath, simMatrixSavePath=simMatrixSavePath)
