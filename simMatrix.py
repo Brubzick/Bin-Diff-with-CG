@@ -1,30 +1,16 @@
 import numpy as np
 
-def vexMnemonic(optVexBlock1, optVexBlock2):# count mnemonic to calculate similarity
-    mDict1 = {}
-    mDict2 = {}
-    for block in optVexBlock1:
-        for mnemonic in block:
-            if mDict1.get(mnemonic):
-                mDict1[mnemonic] += 1
-            else:
-                mDict1[mnemonic] = 1
-    for block in optVexBlock2:
-        for mnemonic in block:
-            if mDict2.get(mnemonic):
-                mDict2[mnemonic] += 1
-            else:
-                mDict2[mnemonic] = 1
-    
-    mnemonics = set(mDict1.keys()).union(mDict2.keys())
+def vexMnemonic(mnemonics1, mnemonics2):# count mnemonic to calculate similarity
+   
+    mnemonics = set(mnemonics1.keys()).union(mnemonics2.keys())
     if len(mnemonics) == 0:
         return 1
 
     f = 0
     for mnemonic in mnemonics:
-        if ((mDict1.get(mnemonic)!=None) & (mDict2.get(mnemonic)!=None)):
-            c1 = mDict1.get(mnemonic)
-            c2 = mDict2.get(mnemonic)
+        if ((mnemonics1.get(mnemonic)!=None) & (mnemonics2.get(mnemonic)!=None)):
+            c1 = mnemonics1.get(mnemonic)
+            c2 = mnemonics2.get(mnemonic)
             f += min(c1,c2)/max(c1,c2)
     
     vexScore = f/len(mnemonics)
@@ -44,7 +30,7 @@ def GetSimMatrix(features1, features2):
     diameter
     cyclomaticComplexity
     goodName
-    optVexBlocks
+    mnemonics
     size
     """
     l1 = len(features1)
@@ -56,7 +42,6 @@ def GetSimMatrix(features1, features2):
     count = 0
     for i in range(l1):
         f1 = features1[i]
-        vex1 = f1['optVexBlocks']
         sucNum1 = f1['sucNum']
         preNum1 = f1['preNum']
         name1 = f1['name']
@@ -68,7 +53,6 @@ def GetSimMatrix(features1, features2):
         cC1 = f1['cyclomaticComplexity']
         for j in range(l2):
             f2 =  features2[j]
-            vex2 = f2['optVexBlocks']
             sucNum2 = f1['sucNum']
             preNum2 = f1['preNum']
             name2 = f2['name']
@@ -80,7 +64,7 @@ def GetSimMatrix(features1, features2):
             cC2 = f2['cyclomaticComplexity']
 
             # vexScore
-            vexScore = vexMnemonic(vex1, vex2)
+            vexScore = vexMnemonic(f1['mnemonics'], f2['mnemonics'])
 
             # sucScore
             if (sucNum1 == sucNum2): sucScore = 1               
@@ -98,7 +82,7 @@ def GetSimMatrix(features1, features2):
             bNScore = min(bN1,bN2)/max(bN1,bN2)
 
             # density score, meanDegree score, transitivity score, diameter score and cyclpmaticComplexity score
-            if ((den1 == 0) and (den2 == 0)):cdenScore = 1
+            if ((den1 == 0) and (den2 == 0)):denScore = 1
             else: denScore = min(den1, den2)/max(den1,den2)
 
             if ((mD1 == 0) and (mD2 == 0)): mDScore = 1  
@@ -118,6 +102,6 @@ def GetSimMatrix(features1, features2):
             
             count += 1
             progress = count/total*100
-            print('progress:',f'{progress}%',end='\r')
+            print('progress:',f'{progress:.4f}%',end='\r')
     
     return simM

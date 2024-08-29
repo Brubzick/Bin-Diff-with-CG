@@ -45,7 +45,16 @@ def FeaturesExtract(proj):
             
             optVexBlocks.append(optVexNorm)
 
-        featureCollector['optVexBlocks'] = optVexBlocks
+        # featureCollector['optVexBlocks'] = optVexBlocks
+        mDict = {}
+        for block in optVexBlocks:
+            for mnemonic in block:
+                if mDict.get(mnemonic):
+                    mDict[mnemonic] += 1
+                else:
+                    mDict[mnemonic] = 1
+        featureCollector['mnemonics'] = mDict
+
         featureCollector['size'] = size
 
         features.append(featureCollector)

@@ -4,8 +4,8 @@ from save_result import saveResult
 
 if __name__ == '__main__':
     # required parameters 二进制文件路径
-    file1Path = '../bin_range/unzip/unzip_x86'
-    file2Path = '../bin_range/file/file_5.38_x86'
+    file1Path = '../bin_range/wget/wget_x86'
+    file2Path = '../bin_range/wget/wget_arm'
     filename1 = os.path.basename(file1Path)
     filename2 = os.path.basename(file2Path)
     # optional parameters 
