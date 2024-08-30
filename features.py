@@ -5,8 +5,10 @@ import networkx
 
 # 抽取特征，得到一个元素都为字典的列表
 def FeaturesExtract(proj):
-    cfg = proj.analyses.CFGFast(normalize=True)
-    funcs = GetFunc(cfg)
+    pCFG = proj.analyses.CFGFast(normalize=True)
+    funcs = GetFunc(pCFG)
+
+    proj.analyses.CompleteCallingConventions(recover_variables=True, cfg=pCFG.model)
 
     features = []
 
@@ -44,8 +46,6 @@ def FeaturesExtract(proj):
                 optVexNorm.append(TypeNorm(vex))
             
             optVexBlocks.append(optVexNorm)
-
-        # featureCollector['optVexBlocks'] = optVexBlocks
         mDict = {}
         for block in optVexBlocks:
             for mnemonic in block:
@@ -56,6 +56,15 @@ def FeaturesExtract(proj):
         featureCollector['mnemonics'] = mDict
 
         featureCollector['size'] = size
+
+        # 函数的参数
+        # conv = proj.analyses.CallingConvention(func=func,cfg=pCFG.model,analyze_callsites=True)
+        # a = proj.analyses.VariableRecoveryFast(func=func)
+        # dec = proj.analyses.Decompiler(func=func,cfg=pCFG.model)
+        # arguments = func.prototype.args
+        # ret = func.prototype.returnty
+        # featureCollector['args'] = arguments
+        # featureCollector['ret'] = ret
 
         features.append(featureCollector)
 
