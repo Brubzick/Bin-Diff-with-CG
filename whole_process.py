@@ -7,7 +7,7 @@ from simMatrix import GetSimMatrix
 from result import GetResult
 from matched import matchedPairs
 
-def process(p1Path, p2Path, features1Path=None,features2Path=None,simMatrixPath=None,save=False,features1SavePath=None,features2SavePath=None,simMatrixSavePath=None):
+def process(p1Path, p2Path, features1Path=None,features2Path=None,simMatrixPath=None,goodName=True,save=False,features1SavePath=None,features2SavePath=None,simMatrixSavePath=None):
     # p1Path and p2Path are required input
     p1 = angr.Project(p1Path, auto_load_libs=False)
     p2 = angr.Project(p2Path, auto_load_libs=False)
@@ -56,7 +56,7 @@ def process(p1Path, p2Path, features1Path=None,features2Path=None,simMatrixPath=
     
     # matching and result
     matching = matchedPairs(simMatrix)
-    result = GetResult(features1, features2, simMatrix, matching)
+    result = GetResult(features1, features2, simMatrix, matching, goodName)
 
     finalScore = result[-1][-1]
     if finalScore > threshold: print('possibly from the same source')

@@ -1,5 +1,5 @@
 
-def GetResult(features1, features2, simMatrix, matching):
+def GetResult(features1, features2, simMatrix, matching, goodName):
 
     tSize1 = 0
     tSize2 = 0
@@ -19,10 +19,16 @@ def GetResult(features1, features2, simMatrix, matching):
         if site[2] == 1:
             f1 = features1[site[0]]
             f2 = features2[site[1]]
-            if (f1['goodName'] or f2['goodName']):
+            if goodName:
+                if (f1['goodName'] or f2['goodName']):
+                    row = [f1['name'], f1['size'], f2['name'], f2['size'], simMatrix[site[0],site[1]]]
+                    print(row)
+                    result.append(row)
+            else:
                 row = [f1['name'], f1['size'], f2['name'], f2['size'], simMatrix[site[0],site[1]]]
                 print(row)
                 result.append(row)
+                
         scoreList.append(simMatrix[site[0],site[1]])
         size1 += features1[site[0]]['size']
         size2 += features2[site[1]]['size']
