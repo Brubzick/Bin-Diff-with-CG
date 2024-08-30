@@ -12,7 +12,7 @@ def process(p1Path, p2Path, features1Path=None,features2Path=None,simMatrixPath=
     p1 = angr.Project(p1Path, auto_load_libs=False)
     p2 = angr.Project(p2Path, auto_load_libs=False)
     # set threshold for final score according to arch
-    if (p1.arch == p2.arch): threshold = 0.75
+    if (p1.arch == p2.arch): threshold = 0.8
     else: threshold = 0.6
 
     filename1 = os.path.basename(p1Path)
