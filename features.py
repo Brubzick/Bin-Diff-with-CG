@@ -8,8 +8,6 @@ def FeaturesExtract(proj):
     pCFG = proj.analyses.CFGFast(normalize=True)
     funcs = GetFunc(pCFG)
 
-    proj.analyses.CompleteCallingConventions(recover_variables=True, cfg=pCFG.model)
-
     features = []
 
     for func in funcs:
@@ -51,15 +49,6 @@ def FeaturesExtract(proj):
         featureCollector['mnemonics'] = mDict
 
         featureCollector['size'] = size
-
-        # 函数的参数
-        # conv = proj.analyses.CallingConvention(func=func,cfg=pCFG.model,analyze_callsites=True)
-        # a = proj.analyses.VariableRecoveryFast(func=func)
-        # dec = proj.analyses.Decompiler(func=func,cfg=pCFG.model)
-        # arguments = func.prototype.args
-        # ret = func.prototype.returnty
-        # featureCollector['args'] = arguments
-        # featureCollector['ret'] = ret
 
         features.append(featureCollector)
 
