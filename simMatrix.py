@@ -29,7 +29,6 @@ def GetSimMatrix(features1, features2):
     transitivity
     diameter
     cyclomaticComplexity
-    goodName
     mnemonics
     size
     """

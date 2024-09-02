@@ -29,11 +29,6 @@ def FeaturesExtract(proj):
                                                              for x in list(networkx.connected_components(cfg.to_undirected())))
         featureCollector['cyclomaticComplexity'] = len(cfg.edges) - len(nodes) + 2*len([c for c in networkx.weakly_connected_components(cfg)])
 
-        # 判断函数名是否是地址
-        hexAddr = str(hex(func.addr))[2:]
-        if (hexAddr in name): featureCollector['goodName'] = False
-        else: featureCollector['goodName'] = True
-
         optVexBlocks = []
         size = 0
         for node in nodes:

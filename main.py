@@ -18,14 +18,12 @@ if __name__ == '__main__':
     features1SavePath = './testData/features/'+filename1+'_features.json'
     features2SavePath = './testData/features/'+filename2+'_features.json'
     simMatrixSavePath = './testData/simMatrixes/'+filename1+'_'+filename2+'_simMatrix.json'
-    # 只输出“完全匹配”中包含有意义函数名的部分，或输出所有完全匹配
-    goodName = True
 
     # 是否保存结果和保存路径
     resultSave = False
     resultSavePath = './testData/results/'+filename1+'_'+filename2+'_result.xlsx'
     
-    result = process(p1Path=file1Path, p2Path=file2Path, features1Path=features1Path, features2Path=features2Path, simMatrixPath=simMatrixPath, goodName=goodName,
+    result = process(p1Path=file1Path, p2Path=file2Path, features1Path=features1Path, features2Path=features2Path, simMatrixPath=simMatrixPath,
                      save=save, features1SavePath=features1SavePath, features2SavePath=features2SavePath, simMatrixSavePath=simMatrixSavePath)
     
     if resultSave:
